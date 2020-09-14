@@ -1,0 +1,145 @@
+// ==== DEFAULT ====
+    
+*
+    box-sizing: border-box
+    font-family: "Roboto", sans-serif
+html,body
+    height: 100vh
+ul
+    padding: 0
+li
+    list-style: none
+
+// ==== APP ====
+
+.app
+    font-size: 14px
+    height: calc(100vh - 2px)
+
+    // Disable user-select
+    .category,.title
+        -moz-user-select: none
+        -webkit-user-select: none
+        user-select: none
+
+    // Sections
+
+    .modules,.kitchen
+        border-right: 3px solid #eee
+    .in,#recipe
+        border-bottom: 3px solid #eee
+
+    // Title
+
+    .title
+        background-color: #fafafa
+        border-bottom: 1px solid #ddd
+        color: #424242
+        font-size: 16px
+        font-weight: bold
+        height: 48px
+        line-height: 38px
+        padding: 8px 12px
+
+    // ===== MODULES =====
+
+    .modules
+
+        // Search
+
+        input
+            border: none
+            border-bottom: 1px solid #ddd
+        &:focus
+            box-shadow: none
+
+        // All the categories
+
+        .categories li
+            overflow: hidden
+
+            // A single category
+
+            .category
+                background-color: #fff
+                border-bottom: 1px solid #ddd
+                color: #1976d2
+                display: block
+                font-weight: bold
+                padding: 10px
+                text-decoration: none
+                &:hover
+                    background-color: #fafafa
+
+            // Modules inside a category
+
+            &:target ul
+                max-height: 100%
+            ul
+                max-height: 0
+                margin: 0
+                overflow: hidden
+
+                li
+                    background-color: #d9edf7
+                    border-bottom: 1px solid #bce8f1
+                    color: #3a87ad
+                    cursor: grab
+                    padding: 10px
+                    text-transform: capitalize
+
+    // ==== KITCHEN ====
+
+    .kitchen
+
+        // Recipe
+
+        #recipe
+            height: calc(100% - 123px)
+            margin: 0
+            overflow: hidden
+            overflow-y: auto
+
+            // Ingredient
+
+            li
+                background-color: #dff0d8
+                border-bottom: 1px solid #d3e8c0
+                border-top: 1px solid #d3e8c0
+                cursor: grab
+                padding: 14px
+                &.sorting
+                    opacity: 0.5
+                .name
+                    color: #468847
+                    font-weight: bold
+
+        // Chef
+
+        .chef
+            background-color: #fafafa
+            height: 75px
+
+            #bake
+                background-color: #5cb85c
+                font-size: 20px
+                font-weight: bold
+                text-transform: uppercase
+                width: 313px
+                &:hover
+                    background-color: #449d44
+
+    // ==== STD IN/OUT ====
+
+    .std textarea
+        border: none
+        max-height: calc(100% - 48px)
+        min-height: calc(100% - 48px)
+        max-width: 100%
+        min-width: 100%
+        overflow: auto
+        padding: 10px
+        -moz-resize: none
+        resize: none
+        &:focus
+            border: 1px solid #ddd

@@ -1,0 +1,34 @@
+{
+  "name": "masterchef",
+  "version": "1.0.0",
+  "description": "Masterchef Frontend",
+  "main": "Gruntfile.js",
+  "scripts": {
+    "compile": "grunt compile --force"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cosasdepuma/masterchef.git"
+  },
+  "keywords": [
+    "masterchef",
+    "hacking",
+    "hacker",
+    "tool",
+    "pentest",
+    "pentesting"
+  ],
+  "author": "Kike Fontan (@CosasDePuma)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cosasdepuma/masterchef/issues"
+  },
+  "homepage": "https://github.com/cosasdepuma/masterchef#readme",
+  "devDependencies": {
+    "grunt": "^1.3.0",
+    "grunt-contrib-htmlmin": "^3.1.0",
+    "grunt-contrib-pug": "^2.0.0",
+    "grunt-contrib-sass": "^2.0.0",
+    "grunt-html-build": "^0.7.1"
+  }
+}
