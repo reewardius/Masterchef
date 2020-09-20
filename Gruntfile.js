@@ -1,4 +1,6 @@
 module.exports = function(grunt) {
+    // TODO: Import FontAwesome css & font
+    // TODO: Compile js files inside js folder
 
     grunt.initConfig({
         pug: {

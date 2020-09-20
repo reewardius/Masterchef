@@ -16,66 +16,72 @@ html(lang="en")
 
     body
         .app.w-100.d-flex.flex-row.p-0.m-0
-  
+        
             // ==== Left: Modules ====
 
             .modules.h-100.col-2.p-0
-            
                 // Title
                 .title
                     span Ingredients
-            
+
                 // Search
                 .md-form.m-0.pt-1
-                    input#search.form-control(type="text", placeholder="Search...", onkeyup="search()")
-                
+                    input#search.form-control(
+                        type="text",
+                        placeholder="Search...",
+                        onkeyup="search()"
+                    )
+
                 // Categories
                 ul.categories.d-block
-                
+                    ul#search-results
+
                     li#enumeration
                         a.category(href="#enumeration") Enumeration
                         ul
                             li(draggable="true")
-                                .name Subdomains
+                                .name.osint Subdomains
                             li(draggable="true")
-                                .name Web Contents
-                        
+                                .name.osint Web Contents
+
                     li#bruteforce
                         a.category(href="#bruteforce") Bruteforcing
                         ul
                             li(draggable="true")
                                 .name FTP
+
                             li(draggable="true")
                                 .name SSH
 
             // ==== Middle: Recipe ====
 
             .kitchen.d-block.col-4.p-0
-                
                 // Title
                 .title
                     span Recipe
-                
+
                 // Recipe
                 ul#recipe
                 
                 // Chef
                 .chef.d-flex.flex-row.justify-content-center.align-items-center
                     button#bake.btn.btn-lg.btn-block.btn-success.rounded-pill
-                        img(alt="Chef!", src="data:image/png;base64,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")
+                        img(
+                            alt="Chef!",
+                            src="data:image/png;base64,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"
+                        )
                         span Bake!
 
             // ==== Right: Std In/Out ====  
 
             .std.h-100.col.d-flex.flex-column.p-0
-                
                 // In
                 .in.h-25
                     // Title
                     .title
                         span Input
                     textarea(tabindex="1", spellcheck="false", autofocus)
-                
+
                 // Out
                 .out.h-75
                     // Title
