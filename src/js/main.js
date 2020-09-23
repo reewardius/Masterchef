@@ -1,3 +1,8 @@
+// Dropzone
+$('.filehere').each(function() {
+    $(this).dropzone({ url: '#' });
+});
+
 // Options
 
 $('.categories .name').each(function() {

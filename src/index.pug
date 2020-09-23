@@ -11,12 +11,15 @@ html(lang="en")
         // build:style inline bootstrap
         // /build
 
+        // lbuild:style inline fontawesome
+        // l/build
+
         // build:style inline main
         // /build
 
     body
         .app.w-100.d-flex.flex-row.p-0.m-0
-        
+
             // ==== Left: Modules ====
 
             .modules.h-100.col-2.p-0
@@ -40,22 +43,42 @@ html(lang="en")
                         a.category(href="#enumeration") Enumeration
                         ul
                             li(draggable="true")
+                                .name.osint HTTP Probe
+                                .calories
+                                    .form-group
+                                        label Port
+                                        input.form-control(type="number",value="80")
+                                        
+                            li(draggable="true")
                                 .name.osint Subdomains
+                                .calories
+                                    .form-group
+                                        label Wordlist
+                                        input.form-control(type="text")
+
                             li(draggable="true")
                                 .name.osint Web Contents
+                                .calories.d-flex.flex-row
+                                    .form-group.col-8
+                                        label Wordlist
+                                        input.form-control(type="text")
+                                    .form-group.mx-1
+                                        label Extensions
+                                        input.form-control(type="text")
 
-                    li#bruteforce
-                        a.category(href="#bruteforce") Bruteforcing
+                    li#output
+                        a.category(href="#output") Output
                         ul
                             li(draggable="true")
-                                .name FTP
-
-                            li(draggable="true")
-                                .name SSH
+                                .name Plain text
+                                .calories
+                                    .form-group
+                                        label Output
+                                        input.form-control(type="text")
 
             // ==== Middle: Recipe ====
 
-            .kitchen.d-block.col-4.p-0
+            .kitchen.d-block.col-3.p-0
                 // Title
                 .title
                     span Recipe
