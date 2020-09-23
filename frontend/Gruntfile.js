@@ -1,6 +1,6 @@
 module.exports = function(grunt) {
-    // TODO: Import FontAwesome css & font
-    // TODO: Compile js files inside js folder
+    // TODO: Delete bootstrap map
+    // TODO: Minimize js files inside js folder
 
     grunt.initConfig({
         pug: {
@@ -23,12 +23,12 @@ module.exports = function(grunt) {
                 options: {
                     styles: {
                         main: 'build/style.min.css',
-                        bootstrap: 'src/vendor/bootstrap/css/bootstrap.min.css'
+                        bootstrap: 'node_modules/bootstrap/dist/css/bootstrap.min.css',
                     },
                     scripts: {
                         main: 'src/js/main.js',
-                        jquery: 'src/vendor/jquery/js/jquery.min.js',
-                        sortable: 'src/vendor/sortable/js/sortable.min.js'
+                        jquery: 'node_modules/jquery/dist/jquery.min.js',
+                        sortable: 'node_modules/sortablejs/dist/sortable.umd.js',
                     }
                 },
                 src: 'build/index.html',

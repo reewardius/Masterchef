@@ -49,6 +49,11 @@ ul,.col-8
 
     .modules
 
+        // Search
+
+        #search
+            border-bottom: 1px solid lightgray
+
         // All the categories
 
         .categories li
@@ -122,9 +127,11 @@ ul,.col-8
                         &:hover
                             cursor: pointer
                         
-                        .fas
-                            color: #aaa
+                        i
+                            display: inline-block
+                            fill: #aaa
                             margin-left: 10px
+                            width: 14px
 
                 // Calories
                 
@@ -175,4 +182,4 @@ ul,.col-8
         -moz-resize: none
         resize: none
         &:focus
-            border: 1px solid #ddd
+            outline: 1px solid #999

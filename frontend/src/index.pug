@@ -11,9 +11,6 @@ html(lang="en")
         // build:style inline bootstrap
         // /build
 
-        // lbuild:style inline fontawesome
-        // l/build
-
         // build:style inline main
         // /build
 
@@ -47,7 +44,7 @@ html(lang="en")
                                 .calories
                                     .form-group
                                         label Port
-                                        input.form-control(type="number",value="80")
+                                        input.form-control(type="number",value="80",min="1",max="65535")
                                         
                             li(draggable="true")
                                 .name.osint Subdomains
@@ -112,7 +109,7 @@ html(lang="en")
                         span Output
                     textarea(tabindex="1", spellcheck="false")
 
-    // Scripts w/ Grunt Include
+    // == Scripts w/ Grunt Include ==
     
     // build:script inline jquery
     // /build

@@ -1,3 +1,0 @@
-jQuery v3.5.1 | (c) JS Foundation and other contributors | jquery.org/license
-Sortable 1.10.2 - MIT | git://github.com/SortableJS/Sortable.git
-Bootstrap v4.5.0 (https://getbootstrap.com/) | Copyright 2011-2020 The Bootstrap Authors | Copyright 2011-2020 Twitter, Inc. | Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
