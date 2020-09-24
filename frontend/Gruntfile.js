@@ -1,5 +1,6 @@
 module.exports = function(grunt) {
     // TODO: Delete bootstrap map
+    // TODO: Remove ` symbol in dist
 
     grunt.initConfig({
         concat: {

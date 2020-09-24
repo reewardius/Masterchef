@@ -1,0 +1,26 @@
+li#enumeration
+    a.category(href="#enumeration") Enumeration
+    ul
+        li(draggable="true")
+            .name.osint HTTP Probe
+            .calories
+                .form-group
+                    label Port
+                    input.form-control(type="number",value="80",min="1",max="65535")
+                    
+        li(draggable="true")
+            .name.osint Subdomains
+            .calories
+                .form-group
+                    label Wordlist
+                    input.form-control(type="text")
+
+        li(draggable="true")
+            .name.osint Web Contents
+            .calories.d-flex.flex-row
+                .form-group.col-8
+                    label Wordlist
+                    input.form-control(type="text")
+                .form-group.mx-1
+                    label Extensions
+                    input.form-control(type="text")
