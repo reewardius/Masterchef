@@ -34,6 +34,7 @@
     "grunt-contrib-sass": "^2.0.0",
     "grunt-contrib-uglify": "^5.0.0",
     "grunt-html-build": "^0.7.1",
+    "grunt-replace": "^1.0.1",
     "jquery": "^3.5.1",
     "sortablejs": "^1.12.0"
   }

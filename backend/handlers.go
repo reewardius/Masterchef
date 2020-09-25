@@ -25,7 +25,7 @@ var wsUpgrader = websocket.Upgrader{}
 func handlerDefault(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	// Template
-	server.src.Execute(w, "index")
+	server.src.Execute(w, server)
 }
 
 func handlerStatus(w http.ResponseWriter, r *http.Request) {
@@ -34,6 +34,8 @@ func handlerStatus(w http.ResponseWriter, r *http.Request) {
 	// JSON Response
 	json.NewEncoder(w).Encode(map[string]bool{"ok": true})
 }
+
+// ----- PRIVATE METHODS -----
 
 func handlerWebSockets(w http.ResponseWriter, r *http.Request) {
 	// WebSocket

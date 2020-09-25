@@ -19,7 +19,6 @@ module.exports = function(grunt) {
             },
             js: {
                 src: [
-                    'node_modules/jquery/dist/jquery.min.js',
                     'node_modules/sortablejs/dist/sortable.umd.js',
                     'src/js/main.js',
                 ],
@@ -33,7 +32,7 @@ module.exports = function(grunt) {
                     scripts: { js: 'build/all.min.js' },
                 },
                 src: 'build/index.html',
-                dest: 'dist/'
+                dest: 'build/'
             }
         },
         htmlmin: {
@@ -42,7 +41,7 @@ module.exports = function(grunt) {
                     removeComments: true,
                     collapseWhitespace: true
                 },
-                files: { 'dist/index.html': 'dist/index.html' }
+                files: { 'build/index.html': 'build/index.html' }
             }
         },
         pug: {
@@ -65,6 +64,23 @@ module.exports = function(grunt) {
                 files: { 'build/all.min.js': ['build/all.js'] }
             }
         },
+        replace: {
+            compile: {
+                options: {
+                    patterns: [
+                            {
+                                match: /`/g,
+                                replacement: ''
+                            },
+                            {
+                                match: /\/\*#\s*sourceMappingURL=.*?\s*\/\n/mg,
+                                replacement: ''
+                            }
+                        ]
+                    },
+                    files: [ {expand: true, flatten: true, src: ['build/index.html'], dest: 'dist/'} ]
+            }
+        }
     });
   
     grunt.loadNpmTasks('grunt-contrib-pug');
@@ -73,6 +89,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-html-build');
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
+    grunt.loadNpmTasks('grunt-replace');
   
     grunt.registerTask('compile', [
         'pug',
@@ -81,5 +98,6 @@ module.exports = function(grunt) {
         'uglify',
         'htmlbuild',
         'htmlmin',
+        'replace',
     ]);
 };

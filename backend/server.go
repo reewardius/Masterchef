@@ -7,6 +7,7 @@ package backend
 import (
 	"context"
 	"errors"
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -23,6 +24,8 @@ import (
 
 // Declare configuration
 type configuration = struct {
+	Host string
+	Port int
 	ctx  *context.Context
 	src  *template.Template
 	wait time.Duration
@@ -34,6 +37,8 @@ type configuration = struct {
 
 // Init configuration
 var server = &configuration{
+	Host: "[::1]",
+	Port: 9999,
 	wait: time.Minute,
 }
 
@@ -70,7 +75,7 @@ func Serve() error {
 	server.src = source
 	// Server
 	srv := &http.Server{
-		Addr:         ":4141",
+		Addr:         fmt.Sprintf(":%d", server.Port),
 		Handler:      router,
 		IdleTimeout:  60 * time.Second,
 		ReadTimeout:  15 * time.Second,
@@ -80,7 +85,7 @@ func Serve() error {
 	srverr := make(chan struct{}, 1)
 	defer close(srverr)
 	go func() {
-		log.Println("[+] Server running on: http://[::1]:4141/")
+		log.Printf("[+] Server running on: http://%s:%d/\n", server.Host, server.Port)
 		if err = srv.ListenAndServe(); err != nil {
 			srverr <- struct{}{}
 		}
