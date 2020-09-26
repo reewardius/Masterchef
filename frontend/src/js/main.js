@@ -1,4 +1,4 @@
-// Websockets
+// ==== Bake ====
 
 var wschannel = new WebSocket("ws://{{ .Host }}:{{ .Port }}/ws");
 
@@ -89,11 +89,11 @@ document.querySelectorAll('.categories .name').forEach(function(el) {
 
 function search() {
     var filter = document.querySelector('#search').value.toUpperCase();
-    document.querySelector('#search-results').childNodes = [];
+    document.querySelector('#search-results').innerHTML = "";
     if(filter.length > 0) {
         document.querySelectorAll('.categories>li>ul>li').forEach(function(module) {
             if(module.innerText.toUpperCase().indexOf(filter) > -1) {
-                var cl = module.cloneNode();
+                var cl = module.cloneNode(10);
                 document.querySelector('#search-results').append(cl);
             }
         });
