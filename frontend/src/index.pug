@@ -5,6 +5,7 @@ html(lang="en")
         meta(charset="UTF-8")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
         title Masterchef
+        link(rel="icon",href="data:;base64,iVBORw0KGgo=")
 
         // == Stylesheets w/ Grunt Include == 
         
@@ -33,8 +34,8 @@ html(lang="en")
                 ul.categories.d-block
                     ul#search-results
 
-                    li#enumeration
-                        a.category(href="#enumeration") Enumeration
+                    li#cat-enumeration
+                        a.category(href="#cat-enumeration") Enumeration
                         ul
                             li(draggable="true")
                                 .name.osint HTTP Probe
@@ -60,8 +61,8 @@ html(lang="en")
                                         label Extensions
                                         input.form-control(type="text")
 
-                    li#output
-                        a.category(href="#output") Output
+                    li#cat-output
+                        a.category(href="#cat-output") Output
                         ul
                             li(draggable="true")
                                 .name Plain text

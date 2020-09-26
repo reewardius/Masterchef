@@ -2,6 +2,8 @@ package backend
 
 import (
 	"encoding/json"
+	"fmt"
+	"log"
 )
 
 type schm struct {
@@ -21,6 +23,11 @@ type subsubschm struct {
 
 func Runner(raw []byte) string {
 	cooker := schm{}
-	json.Unmarshal(raw, &cooker)
+	err := json.Unmarshal(raw, &cooker)
+	if err != nil {
+		log.Fatal(err)
+		return ""
+	}
+	fmt.Println(cooker.Input)
 	return cooker.Input
 }

@@ -6,13 +6,13 @@ wschannel.onerror = function(error) {
     console.log("[-] Connection with the backend failed: " + error);
 };
 
-wschannel.onmessage = function(event) {
-    var data = event.message;
+wschannel.onmessage = function(message) {
+    var data = message.data;
     var output = document.querySelector('#output');
     if(data === '%%#/clear/%%') {
         output.value = "";
     } else {
-        output.value = event.message;
+        output.value = data;
     };
 }
 
