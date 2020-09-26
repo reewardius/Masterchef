@@ -8,7 +8,7 @@ wschannel.onerror = function(error) {
 
 wschannel.onmessage = function(event) {
     var data = event.message;
-    var output = document.getElementById('output');
+    var output = document.querySelector('#output');
     if(data === '%%#/clear/%%') {
         output.value = "";
     } else {
@@ -18,11 +18,12 @@ wschannel.onmessage = function(event) {
 
 // ==== Bake ====
 
-document.getElementById('bake').addEventListener('click', function(e) {
+
+document.querySelector('#bake').addEventListener('click', function(e) {
     e.preventDefault();
     var cooker = { input: "", recipe: [] };
     // Check the target
-    var input = document.getElementById('input').value.trim();
+    var input = document.querySelector('#input').value.trim();
     cooker['input'] = input;
     // Get the recipe    
     document.querySelectorAll('#recipe > li').forEach(function(el) {
@@ -30,7 +31,7 @@ document.getElementById('bake').addEventListener('click', function(e) {
         var ingredient = { name: "", calories: [] };
         ingredient['name'] = el.querySelector('.name').innerText;
         // Get the calories
-        el.querySelector('.calories').childrenNodes.forEach(function(child) {
+        el.querySelector('.calories').childNodes.forEach(function(child) {
             var calories = { name: "", value: "" };
             calories['name'] = child.querySelector('label').innerText;
             calories['value'] = child.querySelector('input').value;
@@ -87,13 +88,13 @@ document.querySelectorAll('.categories .name').forEach(function(el) {
 // ==== Search Ingredients ====
 
 function search() {
-    var filter = document.getElementById('search').value.toUpperCase();
-    document.getElementById('search-results').childNodes = [];
+    var filter = document.querySelector('#search').value.toUpperCase();
+    document.querySelector('#search-results').childNodes = [];
     if(filter.length > 0) {
         document.querySelectorAll('.categories>li>ul>li').forEach(function(module) {
             if(module.innerText.toUpperCase().indexOf(filter) > -1) {
                 var cl = module.cloneNode();
-                document.getElementById('search-results').append(cl);
+                document.querySelector('#search-results').append(cl);
             }
         });
     }
@@ -129,4 +130,3 @@ Sortable.create(document.getElementById("recipe"), {
     sort: true,
     removeOnSpill: true,
 });
-
