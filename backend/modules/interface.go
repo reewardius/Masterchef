@@ -5,8 +5,10 @@ package modules
 // ====================
 
 type Module struct {
-	Name     string            `json:"name"`
-	Calories map[string]string `json:"calories"`
+	Name      string            `json:"name"`
+	Incognito bool              `json:"incognito"`
+	Single    bool              `json:"single"`
+	Calories  map[string]string `json:"calories"`
 }
 
 // ====================
@@ -21,6 +23,6 @@ type calories map[string]string
 
 type Scheme interface {
 	Cook(string, calories) (string, error)
-	CookShh(string, calories) (string, error)
+	CookShh(string) (string, error)
 	ToHTML() string
 }

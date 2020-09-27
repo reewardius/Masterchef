@@ -13,6 +13,8 @@ import (
 // ====================
 
 var modlist = map[string]modules.Scheme{
+	// ----- Enumeration -----
+	"Subdomains": modules.EnumerationSubdomains,
 	// ----- Output -----
-	"Append": modules.OutputAppend,
+	"Append Line": modules.OutputAppendLine,
 }

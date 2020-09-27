@@ -1,4 +1,3 @@
-- [ ] Implement icons (maybe css, maybe fontawesome)
 - [ ] Check noscript in HTML
 - [ ] Check Internet connection
 - [ ] WebSockets Pool/Hub

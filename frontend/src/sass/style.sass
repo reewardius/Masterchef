@@ -1,4 +1,4 @@
-// ==== DEFAULT ====
+// ===== DEFAULT =====
     
 *
     box-sizing: border-box
@@ -14,7 +14,7 @@ li
 ul,.col-8
     padding: 0
 
-// ==== APP ====
+// ===== APP =====
 
 .app
     font-size: 14px
@@ -92,7 +92,7 @@ ul,.col-8
         .opts,.calories
             display: none !important
 
-    // ==== KITCHEN ====
+    // ===== KITCHEN =====
 
     .kitchen
 
@@ -121,19 +121,19 @@ ul,.col-8
                     color: #468847
                     font-weight: bold
                     text-transform: capitalize
-                    
-                    .opts
-                        color: lightgray
-                        float: right
-                        &:hover
-                            cursor: pointer
-                        
-                        i
-                            display: inline-block
-                            fill: #aaa
-                            margin-left: 10px
-                            width: 14px
 
+                    // Options
+
+                    .opts
+                        float: right
+
+                        i
+                            color: #aaa  
+                            display: inline-block
+                            margin-left: 10px
+                            &:hover
+                                cursor: pointer  
+                
                 // Calories
                 
                 .calories
@@ -154,6 +154,16 @@ ul,.col-8
                             font-size: 14px
                             padding: 0 10px
 
+                // Disabled & Icognito
+                
+                &[off="true"]
+                    background-color: #ddd
+                    border-color: #ddd
+                    .name
+                        color: #aaa
+                &[off="true"] .calories,&[incognito="true"] .calories
+                    display: none
+
         // Chef
 
         .chef
@@ -170,7 +180,7 @@ ul,.col-8
                 &:hover
                     background-color: #449d44
 
-    // ==== STD IN/OUT ====
+    // ===== STD IN/OUT =====
 
     .std textarea
         border: none
@@ -184,3 +194,7 @@ ul,.col-8
         resize: none
         &:focus
             outline: 1px solid #999
+
+// ===== ICONS =====
+
+@import 'icons'

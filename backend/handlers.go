@@ -7,6 +7,7 @@ package backend
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -40,14 +41,14 @@ func handlerStatus(w http.ResponseWriter, r *http.Request) {
 
 func handlerWebSockets(w http.ResponseWriter, r *http.Request) {
 	// WebSocket
-	ws, err := wsUpgrader.Upgrade(w, r, nil)
+	client, err := wsUpgrader.Upgrade(w, r, nil)
 	if err != nil {
 		return
 	}
-	defer ws.Close()
+	defer client.Close()
 	for {
 		// Receive message
-		mtype, raw, err := ws.ReadMessage()
+		mtype, raw, err := client.ReadMessage()
 		if err != nil {
 			log.Println("[-] Error in websocket")
 			continue
@@ -68,8 +69,17 @@ func handlerWebSockets(w http.ResponseWriter, r *http.Request) {
 		case "cook":
 			// Execute the modules
 			log.Printf("[*] Order: %s\n", raw)
-			result, _ := Runner(data[1])
-			if err = ws.WriteMessage(mtype, []byte(result)); err != nil {
+			result, err := Runner(data[1])
+			fmt.Println("Outside")
+			fmt.Println(result)
+			fmt.Println(err)
+			log.Printf("[+] Execution completed")
+			if err != nil {
+				log.Println("[-] One or more errors found")
+				result = err.Error()
+			}
+			log.Println(result)
+			if err = client.WriteMessage(mtype, []byte(result)); err != nil {
 				log.Printf("[-] Error sending message:\n%s\n", result)
 			}
 		case "cancel":
