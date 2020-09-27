@@ -31,12 +31,13 @@ document.querySelector('#bake').addEventListener('click', function(e) {
         var ingredient = { name: "", calories: [] };
         ingredient['name'] = el.querySelector('.name').innerText;
         // Get the calories
+        var calories = {};
         el.querySelector('.calories').childNodes.forEach(function(child) {
-            var calories = { name: "", value: "" };
-            calories['name'] = child.querySelector('label').innerText;
-            calories['value'] = child.querySelector('input').value;
-            ingredient['calories'].push(calories);
+            var name = child.querySelector('label').innerText;
+            var value = child.querySelector('input').value;
+            calories[name] = value;
         });
+        ingredient['calories'] = calories;
         cooker['recipe'].push(ingredient);
     });
     // Send to the web socket

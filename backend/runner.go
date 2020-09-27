@@ -1,33 +1,51 @@
 package backend
 
+// ====================
+//  IMPORTS
+// ====================
+
 import (
 	"encoding/json"
 	"fmt"
 	"log"
+
+	"github.com/cosasdepuma/masterchef/backend/modules"
 )
 
-type schm struct {
-	Input  string    `json:"input"`
-	Recipe []subschm `json:"recipe"`
+// ====================
+//  STRUCTS
+// ====================
+
+type recipe struct {
+	Input  string           `json:"input"`
+	Recipe []modules.Module `json:"recipe"`
 }
 
-type subschm struct {
-	Name     string       `json:"name"`
-	Calories []subsubschm `json:"calories"`
-}
+// ====================
+//  PUBLIC METHODS
+// ====================
 
-type subsubschm struct {
-	Name  string `json:"name"`
-	Value string `json:"value"`
-}
-
-func Runner(raw []byte) string {
-	cooker := schm{}
+// Runner TODO
+func Runner(raw []byte) (string, error) {
+	cooker := recipe{}
+	// Unmarshal recipe
 	err := json.Unmarshal(raw, &cooker)
 	if err != nil {
 		log.Fatal(err)
-		return ""
+		return "", err
 	}
-	fmt.Println(cooker.Input)
-	return cooker.Input
+	// Initial values
+	result := cooker.Input
+	for _, module := range cooker.Recipe {
+		ref, ok := modlist[module.Name]
+		if !ok {
+			return "", fmt.Errorf("%s is not valid a module name", module.Name)
+		}
+		data, err := ref.Cook(result, module.Calories)
+		if err != nil {
+			return "", fmt.Errorf("Error running %s:\n\t%s", module.Name, err)
+		}
+		result = data
+	}
+	return result, nil
 }

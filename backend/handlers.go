@@ -68,8 +68,7 @@ func handlerWebSockets(w http.ResponseWriter, r *http.Request) {
 		case "cook":
 			// Execute the modules
 			log.Printf("[*] Order: %s\n", raw)
-			result := Runner(data[1])
-			log.Printf("[+] Result:\n\t%s\n", result)
+			result, _ := Runner(data[1])
 			if err = ws.WriteMessage(mtype, []byte(result)); err != nil {
 				log.Printf("[-] Error sending message:\n%s\n", result)
 			}
