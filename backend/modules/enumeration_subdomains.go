@@ -3,7 +3,6 @@ package modules
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net"
 	"sync"
 
@@ -54,9 +53,7 @@ func (moduleEnumerationSubdomains) Cook(input string, cals calories) (string, er
 		go func(e string) {
 			defer wg.Done()
 			subdomain := fmt.Sprintf("%s.%s", e, input)
-			log.Println("-> ", subdomain)
 			_, err := net.LookupHost(subdomain)
-			log.Println("->-> ", subdomain, err)
 			if err == nil {
 				wlock.Lock()
 				subdomains = append(subdomains, subdomain)
@@ -65,12 +62,10 @@ func (moduleEnumerationSubdomains) Cook(input string, cals calories) (string, er
 			<-tlock
 		}(e)
 	}
-	log.Println("AQUI")
 	wg.Wait()
 
 	subdomains = utils.Unique(subdomains)
 	result := utils.ToString(subdomains)
-	log.Println(result)
 	return result, nil
 }
 

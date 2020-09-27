@@ -37,7 +37,7 @@ func Runner(raw []byte) (string, error) {
 	// Unmarshal recipe
 	err := json.Unmarshal(raw, &cooker)
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 		return "", err
 	}
 	// Initial values

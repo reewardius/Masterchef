@@ -78,7 +78,6 @@ func handlerWebSockets(w http.ResponseWriter, r *http.Request) {
 				log.Println("[-] One or more errors found")
 				result = err.Error()
 			}
-			log.Println(result)
 			if err = client.WriteMessage(mtype, []byte(result)); err != nil {
 				log.Printf("[-] Error sending message:\n%s\n", result)
 			}
