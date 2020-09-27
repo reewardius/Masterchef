@@ -3,6 +3,8 @@ package modules
 import (
 	"encoding/json"
 	"fmt"
+	"log"
+	"net"
 	"sync"
 
 	"github.com/cosasdepuma/masterchef/backend/utils"
@@ -29,7 +31,47 @@ var EnumerationSubdomains = &moduleEnumerationSubdomains{}
 // ----- Normal cooker -----
 
 func (moduleEnumerationSubdomains) Cook(input string, cals calories) (string, error) {
-	return "", fmt.Errorf("Cook not implemented")
+	// Wordlist
+	wordlist, ok := cals["Wordlist"]
+	if !ok {
+		return "", fmt.Errorf("Wordlist not specified")
+	}
+	// Read the wordlist
+	ext, err := utils.ReadFile(wordlist)
+	if err != nil {
+		return "", err
+	}
+	// Results
+	subdomains := []string{}
+	// Concurrency
+	wg := sync.WaitGroup{}
+	wg.Add(len(ext))
+	wlock := sync.Mutex{}
+	tlock := make(chan struct{}, 7) // FIXME Change number of threads
+	// Execution
+	for _, e := range ext {
+		tlock <- struct{}{}
+		go func(e string) {
+			defer wg.Done()
+			subdomain := fmt.Sprintf("%s.%s", e, input)
+			log.Println("-> ", subdomain)
+			_, err := net.LookupHost(subdomain)
+			log.Println("->-> ", subdomain, err)
+			if err == nil {
+				wlock.Lock()
+				subdomains = append(subdomains, subdomain)
+				wlock.Unlock()
+			}
+			<-tlock
+		}(e)
+	}
+	log.Println("AQUI")
+	wg.Wait()
+
+	subdomains = utils.Unique(subdomains)
+	result := utils.ToString(subdomains)
+	log.Println(result)
+	return result, nil
 }
 
 // ----- Incognito cooker -----
