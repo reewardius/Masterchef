@@ -5,10 +5,7 @@ package main
 // ====================
 
 import (
-	"log"
-	"os"
-
-	"github.com/cosasdepuma/masterchef/backend"
+	masterchef "github.com/cosasdepuma/masterchef/pkg"
 )
 
 // ====================
@@ -16,10 +13,7 @@ import (
 // ====================
 
 func main() {
-	exitCode := 0
-	if err := backend.Serve(); err != nil {
-		log.Fatal(err)
-		exitCode = 1
-	}
-	os.Exit(exitCode)
+	mc := masterchef.New()
+	defer mc.Close()
+	mc.Start()
 }

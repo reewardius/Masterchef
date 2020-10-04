@@ -2,3 +2,11 @@
 - [ ] Check Internet connection
 - [ ] WebSockets Pool/Hub
 - [ ] Modules in pug to go (ToHTML method)
+- [ ] Recreate runner in new config
+- [ ] Make it distributable
+- [ ] Dockerfile
+- [ ] Docker-compose test
+- [ ] Documentation
+- [ ] Tests
+- [ ] New modules
+- [ ] Benchmarks

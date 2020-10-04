@@ -1,6 +1,6 @@
 // ==== Web Sockets ====
 
-var wschannel = new WebSocket('ws://{{ .Host }}:{{ .Port }}/ws');
+var wschannel = new WebSocket('ws://{{ .Addr }}/ws');
 
 wschannel.onerror = function(error) {
     console.log('[-] Connection with the backend failed: ' + error);
