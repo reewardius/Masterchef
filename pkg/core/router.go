@@ -10,7 +10,7 @@ import (
 
 func NewRouterChef(source *template.Template) *mux.Router {
 	// Configuration
-	router := basicConfiguration(false)
+	router := basicConfiguration()
 	// Handlers
 	// -- SPA
 	router.Path("/").
@@ -30,21 +30,13 @@ func NewRouterChef(source *template.Template) *mux.Router {
 	return router
 }
 
-func NewRouterCooker() *mux.Router {
-	// Configuration
-	router := basicConfiguration(false)
-	// Handlers
-	// Router
-	return router
-}
-
-func basicConfiguration(isChef bool) *mux.Router {
+func basicConfiguration() *mux.Router {
 	// Configuration
 	router := mux.NewRouter().
 		StrictSlash(true)
 	// Handlers
 	// -- Status
-	router.Path("/alive").
+	router.Path("/_alive").
 		Methods(http.MethodGet, http.MethodHead).
 		HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 			// Headers

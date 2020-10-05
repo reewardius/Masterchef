@@ -1,4 +1,5 @@
-/**/build
-/backend
-/frontend/node_modules
+# File types
 /**/*.txt
+# Development
+/**/build
+/frontend/node_modules

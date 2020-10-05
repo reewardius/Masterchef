@@ -53,32 +53,3 @@ func (srv Server) ListenAndServe(red chan os.Signal) {
 		log.Println("|+| Server successfully stopped")
 	}
 }
-
-// ====================
-//  PUBLIC METHODS
-// ====================
-
-// Serve is a method that configures and runs the web server
-/*
-	// Router
-	router := mux.NewRouter().
-		StrictSlash(true)
-	// SPA
-	router.Path("/").
-		Methods(http.MethodGet).
-		HandlerFunc(handlerDefault)
-	// Status
-	router.Path("/api/status").
-		Methods(http.MethodGet).
-		HandlerFunc(handlerStatus)
-	// WebSockets
-	router.Path("/ws").
-		Methods(http.MethodGet).
-		HandlerFunc(handlerWebSockets)
-	// Templates
-	source, err := template.New("index").Parse(source)
-	if err != nil {
-		return errors.New("Cannot compile index.html")
-	}
-	server.src = source
-*/
