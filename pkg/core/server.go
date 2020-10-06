@@ -75,7 +75,7 @@ func (srv CookerServer) Listen(red context.Context, stop context.CancelFunc) {
 	// Meet chef
 	_, err = utils.HEAD(fmt.Sprintf("http://%s/_hello/%d", srv.chef, srv.port))
 	if err != nil {
-		log.Printf("|!| Cannot meet the chef: %s\n", srv.chef)
+		log.Println("|!| Cannot meet the chef!")
 		return
 	}
 	log.Printf("|*| Meeting the chef: %s\n", srv.chef)
@@ -99,8 +99,9 @@ func (srv CookerServer) Listen(red context.Context, stop context.CancelFunc) {
 				log.Println("|!| I cannot hear your orders, Masterchef...")
 				return
 			}
+			fmt.Println(string(buffer))
 			switch string(buffer) {
-			case "acoffee":
+			case "a coffee":
 				conn.Write([]byte("sure"))
 			}
 		}
