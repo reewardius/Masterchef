@@ -6,8 +6,10 @@ package pkg
 
 import (
 	"context"
+	"net"
+	"time"
 
-	"github.com/cosasdepuma/masterchef/pkg/core"
+	"github.com/cosasdepuma/masterchef/pkg/internal"
 )
 
 // ====================
@@ -20,10 +22,10 @@ type (
 		OK        bool
 		Ctx       context.Context
 		RedButton context.CancelFunc
-		// Core
-		Argv    *core.Arguments
-		Channel *core.Channels
-		Server  core.Server
+		// Internal
+		Argv    *internal.Arguments
+		Channel *internal.Channels
+		Server  internal.Server
 		// Foody
 		Kitchen Kitchen
 	}
@@ -51,16 +53,16 @@ type (
 
 func New() *Masterchef {
 	// Configuration
-	core.GetEnvironmentConfig()
+	internal.GetEnvironmentConfig()
 	// -- Arguments
-	argv := core.NewArguments()
+	argv := internal.NewArguments()
 	// -- Context
 	ctx, cancel := context.WithCancel(context.Background())
 	// -- Channels
-	channels := core.NewChannels()
+	channels := internal.NewChannels()
 	// -- Server
 	var ok bool
-	var srv core.Server
+	var srv internal.Server
 	if len(argv.Chef) == 0 {
 		srv, ok = newChef(argv.Host, argv.Port, channels.GreenLight)
 	} else {
@@ -72,10 +74,11 @@ func New() *Masterchef {
 		OK:        ok,
 		Ctx:       ctx,
 		RedButton: cancel,
-		// Core
+		// Internal
 		Argv:    argv,
 		Channel: channels,
 		Server:  srv,
+		// Foody
 		Kitchen: Kitchen{
 			Cookers: []string{},
 		},
@@ -86,7 +89,7 @@ func New() *Masterchef {
 //  PUBLIC METHODS
 // ====================
 
-func (mc Masterchef) Start() {
+func (mc *Masterchef) Start() {
 	// Signals
 	go func() {
 		select {
@@ -105,6 +108,13 @@ func (mc Masterchef) Start() {
 func (mc *Masterchef) Close() {
 	if mc.Ctx.Err() == nil {
 		mc.RedButton()
+	}
+	for _, cooker := range mc.Kitchen.Cookers {
+		conn, err := net.DialTimeout("tcp", cooker, time.Second*10)
+		if err == nil {
+			conn.Write([]byte("fired!"))
+			conn.Close()
+		}
 	}
 	select {
 	case <-mc.Ctx.Done():

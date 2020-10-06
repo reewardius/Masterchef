@@ -11,23 +11,23 @@ import (
 
 	"github.com/cosasdepuma/masterchef/pkg/utils"
 
-	"github.com/cosasdepuma/masterchef/pkg/core"
+	"github.com/cosasdepuma/masterchef/pkg/internal"
 )
 
 // ====================
 //  PRIVATE CONSTRUCTOR
 // ====================
 
-func newChef(host string, port int, green chan string) (*core.ChefServer, bool) {
+func newChef(host string, port int, green chan string) (*internal.ChefServer, bool) {
 	// -- Handler
 	var handler http.Handler
 	src, err := template.New("index").Parse(source)
 	ok := err == nil
 	if err == nil {
-		handler = core.NewRouter(src, green)
+		handler = internal.NewRouter(src, green)
 	}
 	// -- Server
-	srv := core.NewChefServer(host, port, handler)
+	srv := internal.NewChefServer(host, port, handler)
 	ok = ok && srv != nil
 	return srv, ok
 }

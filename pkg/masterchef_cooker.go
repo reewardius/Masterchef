@@ -5,14 +5,14 @@ package pkg
 // ====================
 
 import (
-	"github.com/cosasdepuma/masterchef/pkg/core"
+	"github.com/cosasdepuma/masterchef/pkg/internal"
 )
 
 // ====================
 //  PRIVATE CONSTRUCTOR
 // ====================
 
-func newCooker(host string, port int, chef string) (*core.CookerServer, bool) {
-	srv := core.NewCookerServer(host, port, chef)
+func newCooker(host string, port int, chef string) (*internal.CookerServer, bool) {
+	srv := internal.NewCookerServer(host, port, chef)
 	return srv, srv != nil
 }
