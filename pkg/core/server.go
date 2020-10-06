@@ -4,19 +4,96 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"net"
 	"net/http"
-	"os"
+	"strings"
 	"time"
+
+	"github.com/cosasdepuma/masterchef/pkg/utils"
 )
 
-type Server struct {
-	http *http.Server
+type Server interface {
+	Listen(context.Context, context.CancelFunc)
 }
 
-func NewServer(host string, port int, handler http.Handler) *Server {
+type ChefServer struct {
+	listener *http.Server
+}
+
+type CookerServer struct {
+	chef string
+	host string
+	port int
+}
+
+// ===== COOKER SERVER =====
+
+func NewCookerServer(host string, port int, chef string) *CookerServer {
+	var srv CookerServer
+	// Chef alive
+	if utils.IsAlive(chef) {
+		srv.chef = chef
+	}
 	// Server
-	return &Server{
-		http: &http.Server{
+	srv.host = host
+	srv.port = port
+	return &srv
+}
+
+func (srv CookerServer) Listen(red context.Context, stop context.CancelFunc) {
+	addr := utils.ToAddr(srv.host, srv.port)
+	// Listener
+	lstnr, err := net.Listen("tcp", addr)
+	if err != nil {
+		log.Printf("|!| Cannot start the server: %s\n", addr)
+		return
+	}
+	log.Printf("|+| Server running on: %s\n", addr)
+	// Meet chef
+	_, err = utils.HEAD(fmt.Sprintf("http://%s/_hello/%d", srv.chef, srv.port))
+	if err != nil {
+		log.Printf("|!| Cannot meet the chef: %s\n", srv.chef)
+		return
+	}
+	log.Printf("|*| Meeting the chef: %s\n", srv.chef)
+	go func() {
+		defer stop()
+		conn, err := lstnr.Accept()
+		defer conn.Close()
+		if err != nil {
+			if !strings.Contains(err.Error(), "use of closed network connection") {
+				log.Printf("|!| Unexpected error: %s\n", err.Error())
+			}
+			return
+		}
+		log.Printf("|+| Cooking for: %s\n", conn.RemoteAddr())
+		// Get data
+		for {
+			buffer := make([]byte, 1024)
+			_, err := conn.Read(buffer)
+			if err != nil {
+				fmt.Println(err.Error())
+				log.Println("|!| I cannot hear your orders, Masterchef...")
+				return
+			}
+			switch string(buffer) {
+			case "acoffee":
+				conn.Write([]byte("sure"))
+			}
+		}
+	}()
+	select {
+	case <-red.Done():
+		lstnr.Close()
+	}
+}
+
+// ===== CHEF SERVER =====
+
+func NewChefServer(host string, port int, handler http.Handler) *ChefServer {
+	// Server
+	return &ChefServer{
+		listener: &http.Server{
 			Addr:         fmt.Sprintf("%s:%d", host, port),
 			IdleTimeout:  60 * time.Second,
 			Handler:      handler,
@@ -26,14 +103,14 @@ func NewServer(host string, port int, handler http.Handler) *Server {
 	}
 }
 
-func (srv Server) ListenAndServe(red chan os.Signal) {
+func (srv *ChefServer) Listen(red context.Context, stop context.CancelFunc) {
 	// Lights
 	yellow := make(chan error, 1)
 	defer close(yellow)
 	// Run
-	log.Printf("|+| Server running on: http://%s\n", srv.http.Addr)
+	log.Printf("|+| Server running on: http://%s\n", srv.listener.Addr)
 	go func() {
-		if err := srv.http.ListenAndServe(); err != nil {
+		if err := srv.listener.ListenAndServe(); err != nil {
 			select {
 			case <-yellow:
 			default:
@@ -44,12 +121,13 @@ func (srv Server) ListenAndServe(red chan os.Signal) {
 	// Catch
 	select {
 	case err := <-yellow:
+		stop()
 		log.Printf("|-| Server suddently stopped: %s\n", err.Error())
-	case <-red:
+	case <-red.Done():
 		ctx, gracefulShutdown := context.WithTimeout(context.Background(), time.Minute)
 		defer gracefulShutdown()
 		log.Println("|*| Starting shutdown process (Max time: 60 seconds)")
-		srv.http.Shutdown(ctx)
+		srv.listener.Shutdown(ctx)
 		log.Println("|+| Server successfully stopped")
 	}
 }
