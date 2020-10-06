@@ -1,12 +1,23 @@
 package core
 
+// ====================
+//  IMPORTS
+// ====================
 import "flag"
+
+// ====================
+//  TYPES
+// ====================
 
 type Arguments struct {
 	Host string
 	Port int
 	Chef string
 }
+
+// ====================
+//  CONSTRUCTOR
+// ====================
 
 func NewArguments() *Arguments {
 	argv := &Arguments{}

@@ -1,5 +1,9 @@
 package core
 
+// ====================
+//  IMPORTS
+// ====================
+
 import (
 	"context"
 	"fmt"
@@ -12,21 +16,36 @@ import (
 	"github.com/cosasdepuma/masterchef/pkg/utils"
 )
 
-type Server interface {
-	Listen(context.Context, context.CancelFunc)
-}
+// ====================
+//  TYPES
+// ====================
 
-type ChefServer struct {
-	listener *http.Server
-}
+type (
+	Server interface {
+		Listen(context.Context, context.CancelFunc)
+	}
 
-type CookerServer struct {
-	chef string
-	host string
-	port int
-}
+	ChefServer struct {
+		listener *http.Server
+	}
 
-// ===== COOKER SERVER =====
+	CookerServer struct {
+		chef string
+		host string
+		port int
+	}
+)
+
+// ====================
+// =                  =
+// =      COOKER      =
+// =      SERVER      =
+// =                  =
+// ====================
+
+// ====================
+//  CONSTRUCTOR
+// ====================
 
 func NewCookerServer(host string, port int, chef string) *CookerServer {
 	var srv CookerServer
@@ -39,6 +58,10 @@ func NewCookerServer(host string, port int, chef string) *CookerServer {
 	srv.port = port
 	return &srv
 }
+
+// ====================
+//  STRUCTURE METHODS
+// ====================
 
 func (srv CookerServer) Listen(red context.Context, stop context.CancelFunc) {
 	addr := utils.ToAddr(srv.host, srv.port)
@@ -88,7 +111,16 @@ func (srv CookerServer) Listen(red context.Context, stop context.CancelFunc) {
 	}
 }
 
-// ===== CHEF SERVER =====
+// ====================
+// =                  =
+// =       CHEF       =
+// =      SERVER      =
+// =                  =
+// ====================
+
+// ====================
+//  CONSTRUCTOR
+// ====================
 
 func NewChefServer(host string, port int, handler http.Handler) *ChefServer {
 	// Server
@@ -102,6 +134,10 @@ func NewChefServer(host string, port int, handler http.Handler) *ChefServer {
 		},
 	}
 }
+
+// ====================
+//  STRUCTURE METHODS
+// ====================
 
 func (srv *ChefServer) Listen(red context.Context, stop context.CancelFunc) {
 	// Lights

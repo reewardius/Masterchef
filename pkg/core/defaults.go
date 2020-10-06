@@ -1,16 +1,28 @@
 package core
 
+// ====================
+//  IMPORTS
+// ====================
+
 import (
 	"log"
 	"os"
 	"strconv"
 )
 
+// ====================
+//  GLOBALS
+// ====================
+
 var (
 	DefaultHost = "[::1]" // Ipv6
 	DefaultPort = 7767    // Decimal ASCII: MC
 	DefaultChef = ""
 )
+
+// ====================
+//  PUBLIC METHODS
+// ====================
 
 func GetEnvironmentConfig() {
 	// MCHOST

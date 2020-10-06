@@ -1,14 +1,26 @@
 package core
 
+// ====================
+//  IMPORTS
+// ====================
+
 import (
 	"os"
 	"os/signal"
 )
 
+// ====================
+//  TYPES
+// ====================
+
 type Channels struct {
 	GreenLight chan string
 	RedLight   chan os.Signal
 }
+
+// ====================
+//  CONSTRUCTOR
+// ====================
 
 func NewChannels() *Channels {
 	// Configuration
@@ -21,6 +33,10 @@ func NewChannels() *Channels {
 		RedLight:   red,
 	}
 }
+
+// ====================
+//  STRUCTURE METHODS
+// ====================
 
 func (ch *Channels) Close() {
 	close(ch.GreenLight)

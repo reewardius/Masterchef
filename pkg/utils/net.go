@@ -1,5 +1,9 @@
 package utils
 
+// ====================
+//  IMPORTS
+// ====================
+
 import (
 	"context"
 	"io"
@@ -7,6 +11,10 @@ import (
 	"net/http"
 	"time"
 )
+
+// ====================
+//  PUBLIC METHODS
+// ====================
 
 func IsAlive(addr string) bool {
 	conn, err := net.DialTimeout("tcp", addr, time.Second*10)
@@ -19,6 +27,10 @@ func IsAlive(addr string) bool {
 func HEAD(addr string) (*http.Response, error) {
 	return genericRequest("HEAD", addr, nil, map[string]string{"Connection": "close"})
 }
+
+// ====================
+//  PRIVATE METHODS
+// ====================
 
 func genericRequest(method string, addr string, body io.Reader, headers map[string]string) (*http.Response, error) {
 	ctx, clean := context.WithTimeout(context.Background(), 10*time.Second)

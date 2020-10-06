@@ -1,5 +1,9 @@
 package pkg
 
+// ====================
+//  IMPORTS
+// ====================
+
 import (
 	"context"
 	"log"
@@ -10,6 +14,10 @@ import (
 
 	"github.com/cosasdepuma/masterchef/pkg/core"
 )
+
+// ====================
+//  STRUCTURES
+// ====================
 
 type (
 	Masterchef struct {
@@ -41,6 +49,10 @@ type (
 		Score     int
 	}
 )
+
+// ====================
+//  PUBLIC CONSTRUCTOR
+// ====================
 
 func New() *Masterchef {
 	// Configuration
@@ -75,6 +87,10 @@ func New() *Masterchef {
 	}
 }
 
+// ====================
+//  PRIVATE CONSTRUCTOR
+// ====================
+
 func newChef(host string, port int, green chan string) (*core.ChefServer, bool) {
 	// -- Handler
 	var handler http.Handler
@@ -93,6 +109,10 @@ func newCooker(host string, port int, chef string) (*core.CookerServer, bool) {
 	srv := core.NewCookerServer(host, port, chef)
 	return srv, srv != nil
 }
+
+// ====================
+//  PUBLIC METHODS
+// ====================
 
 func (mc Masterchef) Start() {
 	// Signals

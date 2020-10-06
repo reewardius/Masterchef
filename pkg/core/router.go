@@ -1,5 +1,9 @@
 package core
 
+// ====================
+//  IMPORTS
+// ====================
+
 import (
 	"encoding/json"
 	"fmt"
@@ -10,6 +14,10 @@ import (
 
 	"github.com/gorilla/mux"
 )
+
+// ====================
+//  CONSTRUCTOR
+// ====================
 
 func NewRouter(source *template.Template, green chan string) *mux.Router {
 	// Configuration
@@ -31,6 +39,10 @@ func NewRouter(source *template.Template, green chan string) *mux.Router {
 	// Router
 	return router
 }
+
+// ====================
+//  PRIVATE METHODS
+// ====================
 
 func handlerIndex(w http.ResponseWriter, r *http.Request, source *template.Template) {
 	// Headers
