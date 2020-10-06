@@ -82,13 +82,13 @@ func (srv CookerServer) Listen(red context.Context, stop context.CancelFunc) {
 	go func() {
 		defer stop()
 		conn, err := lstnr.Accept()
-		defer conn.Close()
 		if err != nil {
 			if !strings.Contains(err.Error(), "use of closed network connection") {
 				log.Printf("|!| Unexpected error: %s\n", err.Error())
 			}
 			return
 		}
+		defer conn.Close()
 		log.Printf("|+| Cooking for: %s\n", conn.RemoteAddr())
 		// Get data
 		for {

@@ -6,7 +6,6 @@ package pkg
 
 import (
 	"context"
-	"net"
 
 	"github.com/cosasdepuma/masterchef/pkg/core"
 )
@@ -29,7 +28,7 @@ type (
 		Kitchen Kitchen
 	}
 	Kitchen struct {
-		Cookers  map[string]net.Conn
+		Cookers  []string
 		Sessions []Session
 	}
 	Session struct {
@@ -78,7 +77,7 @@ func New() *Masterchef {
 		Channel: channels,
 		Server:  srv,
 		Kitchen: Kitchen{
-			Cookers: map[string]net.Conn{},
+			Cookers: []string{},
 		},
 	}
 }
@@ -109,9 +108,6 @@ func (mc *Masterchef) Close() {
 	}
 	select {
 	case <-mc.Ctx.Done():
-		for _, cooker := range mc.Kitchen.Cookers {
-			cooker.Close()
-		}
 		mc.Channel.Close()
 	}
 }
