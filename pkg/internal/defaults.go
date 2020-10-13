@@ -17,7 +17,6 @@ import (
 var (
 	DefaultHost = "[::1]" // Ipv6
 	DefaultPort = 7767    // Decimal ASCII: MC
-	DefaultChef = ""
 )
 
 // ====================
@@ -36,10 +35,5 @@ func GetEnvironmentConfig() {
 			log.Printf("|*| Environment variable: MCPORT=%d\n", port)
 			DefaultPort = port
 		}
-	}
-	// MCHEF
-	if echef := os.Getenv("MCHEF"); len(echef) > 0 {
-		log.Printf("|*| Environment variable: MCHEF=%s\n", echef)
-		DefaultChef = echef
 	}
 }

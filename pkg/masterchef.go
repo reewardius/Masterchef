@@ -6,10 +6,11 @@ package pkg
 
 import (
 	"context"
-	"net"
-	"time"
+	"net/http"
+	"text/template"
 
 	"github.com/cosasdepuma/masterchef/pkg/internal"
+	"github.com/cosasdepuma/masterchef/pkg/public"
 )
 
 // ====================
@@ -25,15 +26,11 @@ type (
 		// Internal
 		Argv    *internal.Arguments
 		Channel *internal.Channels
-		Server  internal.Server
+		Server  *internal.Server
 		// Foody
 		Kitchen Kitchen
 	}
 	Kitchen struct {
-		Cookers  []string
-		Sessions []Session
-	}
-	Session struct {
 		Uuid    string
 		Recipes []Result
 	}
@@ -62,12 +59,16 @@ func New() *Masterchef {
 	channels := internal.NewChannels()
 	// -- Server
 	var ok bool
-	var srv internal.Server
-	if len(argv.Chef) == 0 {
-		srv, ok = newChef(argv.Host, argv.Port, channels.GreenLight)
-	} else {
-		srv, ok = newCooker(argv.Host, argv.Port, argv.Chef)
+	// -- Handler
+	var handler http.Handler
+	src, err := template.New("index").Parse(public.Source)
+	ok = err == nil
+	if err == nil {
+		handler = internal.NewRouter(src, channels.GreenLight)
 	}
+	// -- Server
+	srv := internal.NewServer(argv.Host, argv.Port, handler)
+	ok = ok && srv != nil
 	// Masterchef
 	return &Masterchef{
 		// Comunication
@@ -78,10 +79,6 @@ func New() *Masterchef {
 		Argv:    argv,
 		Channel: channels,
 		Server:  srv,
-		// Foody
-		Kitchen: Kitchen{
-			Cookers: []string{},
-		},
 	}
 }
 
@@ -97,10 +94,6 @@ func (mc *Masterchef) Start() {
 			mc.RedButton()
 		}
 	}()
-	// Cookers
-	if len(mc.Argv.Chef) == 0 {
-		go mc.chefOrchestration()
-	}
 	// Server
 	mc.Server.Listen(mc.Ctx, mc.RedButton)
 }
@@ -108,13 +101,6 @@ func (mc *Masterchef) Start() {
 func (mc *Masterchef) Close() {
 	if mc.Ctx.Err() == nil {
 		mc.RedButton()
-	}
-	for _, cooker := range mc.Kitchen.Cookers {
-		conn, err := net.DialTimeout("tcp", cooker, time.Second*10)
-		if err == nil {
-			conn.Write([]byte("fired!"))
-			conn.Close()
-		}
 	}
 	select {
 	case <-mc.Ctx.Done():
