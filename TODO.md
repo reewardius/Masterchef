@@ -1,12 +1,12 @@
-- [ ] Check noscript in HTML
+- [x] Check noscript in HTML
 - [ ] Check Internet connection
-- [ ] WebSockets Pool/Hub
 - [ ] Modules in pug to go (ToHTML method)
 - [ ] Recreate runner in new config
-- [ ] Make it distributable
 - [ ] Dockerfile
 - [ ] Docker-compose test
 - [ ] Documentation
 - [ ] Tests
 - [ ] New modules
 - [ ] Benchmarks
+- [ ] Lock max number of orders/cookers (threads)
+- [ ] Someone wants a dish (uuid) and the program respond to that order only to the client (pool/hub ws?)
