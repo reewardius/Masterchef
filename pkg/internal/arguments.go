@@ -28,8 +28,6 @@ func NewArguments() *Arguments {
 	// -- Port
 	flag.IntVar(&argv.Port, "p", DefaultPort, "")
 	flag.IntVar(&argv.Port, "port", DefaultPort, "")
-	// -- Chef
-	flag.StringVar(&argv.Chef, "chef", DefaultChef, "")
 	// Get Values
 	flag.Parse()
 	return argv
