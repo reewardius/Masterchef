@@ -50,6 +50,7 @@ func (srv *ChefServer) Listen(red context.Context, stop context.CancelFunc) {
 	go func() {
 		if err := srv.listener.ListenAndServe(); err != nil {
 			select {
+			case <-red.Done():
 			case <-yellow:
 			default:
 				yellow <- err

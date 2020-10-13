@@ -12,8 +12,16 @@ import (
 	"regexp"
 	"text/template"
 
+	"github.com/cosasdepuma/masterchef/pkg/utils"
 	"github.com/gorilla/mux"
+	"github.com/gorilla/websocket"
 )
+
+// ====================
+//  GLOBALS
+// ====================
+
+var wsUpgrader = websocket.Upgrader{}
 
 // ====================
 //  CONSTRUCTOR
@@ -32,6 +40,10 @@ func NewRouter(source *template.Template, green chan string) *mux.Router {
 	router.Path("/_hello/{port:[0-9]{1,5}}").
 		Methods(http.MethodHead).
 		HandlerFunc(func(w http.ResponseWriter, r *http.Request) { handlerHello(w, r, green) })
+	// -- Kitchen
+	router.Path("/_kitchen").
+		Methods(http.MethodGet).
+		HandlerFunc(handlerKitchenWS)
 	// -- SPA
 	router.Path("/").
 		Methods(http.MethodGet, http.MethodHead).
@@ -82,4 +94,31 @@ func handlerHello(w http.ResponseWriter, r *http.Request, green chan string) {
 	// Headers
 	w.Header().Set("X-Powered-By", "Forks")
 	w.WriteHeader(http.StatusOK)
+}
+
+func handlerKitchenWS(w http.ResponseWriter, r *http.Request) {
+	// New Client
+	client, err := wsUpgrader.Upgrade(w, r, nil)
+	if err != nil {
+		log.Printf("|-| %s entered the restaurant but there was an error: %s\n", r.RemoteAddr, err.Error())
+		return
+	}
+	defer client.Close()
+	// Parse the orders
+	for {
+		// New order
+		orderType, order, err := client.ReadMessage()
+		if err != nil {
+			log.Printf("|-| Cannot retrieve order from %s\n", r.RemoteAddr)
+			continue
+		}
+		// Parse the order
+		fmt.Println(string(order))
+		cmd, data, ok := utils.ParseWSMessage(order)
+		if !ok {
+			log.Printf("|-| There was an error in the order from %s: ", r.RemoteAddr)
+			continue
+		}
+		fmt.Println(orderType, cmd, data)
+	}
 }

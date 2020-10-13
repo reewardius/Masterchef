@@ -9,6 +9,8 @@ import (
 	"net/http"
 	"text/template"
 
+	"github.com/cosasdepuma/masterchef/pkg/public"
+
 	"github.com/cosasdepuma/masterchef/pkg/utils"
 
 	"github.com/cosasdepuma/masterchef/pkg/internal"
@@ -21,7 +23,7 @@ import (
 func newChef(host string, port int, green chan string) (*internal.ChefServer, bool) {
 	// -- Handler
 	var handler http.Handler
-	src, err := template.New("index").Parse(source)
+	src, err := template.New("index").Parse(public.Source)
 	ok := err == nil
 	if err == nil {
 		handler = internal.NewRouter(src, green)

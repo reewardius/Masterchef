@@ -4,7 +4,9 @@ package utils
 //  IMPORTS
 // ====================
 
-import "fmt"
+import (
+	"fmt"
+)
 
 // ====================
 //  PUBLIC METHODS
