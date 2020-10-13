@@ -84,7 +84,7 @@ func handlerKitchenWS(w http.ResponseWriter, r *http.Request) {
 	// Parse the orders
 	for {
 		// New order
-		orderType, order, err := client.ReadMessage()
+		_, order, err := client.ReadMessage()
 		if err != nil {
 			log.Printf("|-| Cannot retrieve order from %s\n", r.RemoteAddr)
 			continue
@@ -95,6 +95,11 @@ func handlerKitchenWS(w http.ResponseWriter, r *http.Request) {
 			log.Printf("|-| There was an error in the order from %s: ", r.RemoteAddr)
 			continue
 		}
-		fmt.Println(orderType, cmd, data)
+		// Cook
+		switch cmd {
+		case "cook":
+			fmt.Println(newDish(data))
+		case "cancel":
+		}
 	}
 }

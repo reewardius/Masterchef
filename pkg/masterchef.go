@@ -31,16 +31,8 @@ type (
 		Kitchen Kitchen
 	}
 	Kitchen struct {
-		Uuid    string
-		Recipes []Result
-	}
-	Result struct {
-		ID        string
-		Module    string
-		Arguments map[string]string
-		Input     string
-		Output    []string
-		Score     int
+		Uuid   string
+		Dishes []internal.Dish
 	}
 )
 
@@ -90,9 +82,10 @@ func (mc *Masterchef) Start() {
 	// Signals
 	go func() {
 		select {
+		case <-mc.Ctx.Done():
 		case <-mc.Channel.RedLight:
-			mc.RedButton()
 		}
+		mc.RedButton()
 	}()
 	// Server
 	mc.Server.Listen(mc.Ctx, mc.RedButton)
