@@ -6,7 +6,6 @@ package internal
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 	"text/template"
@@ -27,7 +26,7 @@ var wsUpgrader = websocket.Upgrader{}
 //  CONSTRUCTOR
 // ====================
 
-func NewRouter(source *template.Template, green chan string) *mux.Router {
+func NewRouter(source *template.Template, opts map[string]interface{}) *mux.Router {
 	// Configuration
 	router := mux.NewRouter().
 		StrictSlash(true)
@@ -39,7 +38,9 @@ func NewRouter(source *template.Template, green chan string) *mux.Router {
 	// -- Kitchen
 	router.Path("/_kitchen").
 		Methods(http.MethodGet).
-		HandlerFunc(handlerKitchenWS)
+		HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			handlerKitchenWS(w, r, opts)
+		})
 	// -- SPA
 	router.Path("/").
 		Methods(http.MethodGet, http.MethodHead).
@@ -73,7 +74,7 @@ func handlerAlive(w http.ResponseWriter, _ *http.Request) {
 	json.NewEncoder(w).Encode(map[string]bool{"alive": true})
 }
 
-func handlerKitchenWS(w http.ResponseWriter, r *http.Request) {
+func handlerKitchenWS(w http.ResponseWriter, r *http.Request, opts map[string]interface{}) {
 	// New Client
 	client, err := wsUpgrader.Upgrade(w, r, nil)
 	if err != nil {
@@ -84,22 +85,28 @@ func handlerKitchenWS(w http.ResponseWriter, r *http.Request) {
 	// Parse the orders
 	for {
 		// New order
-		_, order, err := client.ReadMessage()
+		t, order, err := client.ReadMessage()
 		if err != nil {
-			log.Printf("|-| Cannot retrieve order from %s\n", r.RemoteAddr)
-			continue
+			log.Printf("|-| No more orders from %s\n", r.RemoteAddr)
+			return
 		}
 		// Parse the order
-		cmd, data, ok := utils.ParseWSMessage(order)
+		cmd, request, ok := utils.ParseWSMessage(order)
 		if !ok {
-			log.Printf("|-| There was an error in the order from %s: ", r.RemoteAddr)
+			log.Printf("|-| There was an error in the order from %s\n", r.RemoteAddr)
 			continue
 		}
 		// Cook
+		var response []byte
 		switch cmd {
 		case "cook":
-			fmt.Println(newDish(data))
+			response = utils.ToWSResponse(cookInFurnace(request, opts))
 		case "cancel":
+		}
+		// Deliver the dish
+		err = client.WriteMessage(t, response)
+		if err != nil {
+			log.Printf("|-| There was an error delivering dish to %s\n", r.RemoteAddr)
 		}
 	}
 }

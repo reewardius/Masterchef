@@ -10,9 +10,9 @@ import "flag"
 // ====================
 
 type Arguments struct {
-	Host string
-	Port int
-	Chef string
+	Host    string
+	Port    int
+	Threads int
 }
 
 // ====================
@@ -28,6 +28,9 @@ func NewArguments() *Arguments {
 	// -- Port
 	flag.IntVar(&argv.Port, "p", DefaultPort, "")
 	flag.IntVar(&argv.Port, "port", DefaultPort, "")
+	// -- Other
+	flag.IntVar(&argv.Threads, "t", DefaultThreads, "")
+	flag.IntVar(&argv.Threads, "threads", DefaultThreads, "")
 	// Get Values
 	flag.Parse()
 	return argv

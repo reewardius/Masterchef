@@ -4,23 +4,9 @@ package utils
 //  IMPORTS
 // ====================
 
-import (
-	"fmt"
-	"strings"
-)
-
 // ====================
 //  PUBLIC METHODS
 // ====================
-
-// ToString converts a string slice into a string
-func ToString(data []string) string {
-	result := ""
-	for _, str := range data {
-		result = fmt.Sprintf("%s\n%s", result, str)
-	}
-	return strings.TrimSpace(result)
-}
 
 // Unique removes duplicates from a string slice
 func Unique(data []string) []string {

@@ -6,7 +6,9 @@ package utils
 
 import (
 	"context"
+	"fmt"
 	"io"
+	"io/ioutil"
 	"net"
 	"net/http"
 	"time"
@@ -16,16 +18,30 @@ import (
 //  PUBLIC METHODS
 // ====================
 
+func GETBody(addr string) ([]byte, error) {
+	// Request the data
+	resp, err := genericRequest("GET", addr, nil, nil)
+	if err != nil || resp.StatusCode != 200 {
+		return nil, fmt.Errorf("%s is not available", addr)
+	}
+	// Grab the content
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("%s does not respond correctly", addr)
+	}
+	return body, nil
+}
+
+func HEAD(addr string) (*http.Response, error) {
+	return genericRequest("HEAD", addr, nil, map[string]string{"Connection": "close"})
+}
+
 func IsAlive(addr string) bool {
 	conn, err := net.DialTimeout("tcp", addr, time.Second*10)
 	if err == nil {
 		conn.Close()
 	}
 	return err == nil
-}
-
-func HEAD(addr string) (*http.Response, error) {
-	return genericRequest("HEAD", addr, nil, map[string]string{"Connection": "close"})
 }
 
 // ====================

@@ -10,6 +10,7 @@ import (
 	"text/template"
 
 	"github.com/cosasdepuma/masterchef/pkg/internal"
+	"github.com/cosasdepuma/masterchef/pkg/modules"
 	"github.com/cosasdepuma/masterchef/pkg/public"
 )
 
@@ -31,8 +32,7 @@ type (
 		Kitchen Kitchen
 	}
 	Kitchen struct {
-		Uuid   string
-		Dishes []internal.Dish
+		Dishes []modules.Dish
 	}
 )
 
@@ -56,7 +56,9 @@ func New() *Masterchef {
 	src, err := template.New("index").Parse(public.Source)
 	ok = err == nil
 	if err == nil {
-		handler = internal.NewRouter(src, channels.GreenLight)
+		handler = internal.NewRouter(src, map[string]interface{}{
+			"threads": argv.Threads,
+		})
 	}
 	// -- Server
 	srv := internal.NewServer(argv.Host, argv.Port, handler)

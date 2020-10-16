@@ -26,3 +26,8 @@ func ParseWSMessage(msg []byte) (string, []byte, bool) {
 	}
 	return string(data[0]), data[1], true
 }
+
+func ToWSResponse(response []string) []byte {
+	str := ToString(response)
+	return []byte(str)
+}
