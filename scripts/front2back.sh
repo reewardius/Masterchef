@@ -3,7 +3,10 @@
 # Get root path
 root=$(dirname "${0}")/..
 # Compile frontend
-npm run --prefix "${root}/frontend" compile 1>/dev/null || exit 1
+if ! test -f "${root}/frontend/dist/index.html"
+then
+    npm run --prefix "${root}/frontend" compile 1>/dev/null || exit 1
+fi
 # Copy to backend
 cat > "${root}/pkg/public/index.go" << EOF 
 package public

@@ -19,12 +19,12 @@ root=$(dirname "${0}")/..
 # Compile frontend
 sh "${root}"/scripts/front2back.sh 2>/dev/null || error "Can't compile frontend"
 # Compile the application
-rm -rf "${root}"/dist
+rm -rf "${root}"/bin
 compile() {
     test "${1}/${2}" = "darwin/386" && return
     e=
     test "${1}" = "windows" && e=.exe
-    n="${root}/dist/masterchef_${1}-${2}${e}"
+    n="${root}/bin/masterchef_${1}-${2}${e}"
     GOOS="${1}" GOARCH="${2}" go build -ldflags "-s -w" -i -o "${n}" "${root}"/main.go
     echo "[+] ${n} compiled ($(du -h "${n}" | awk '{ print $1 }'))"
 }
@@ -46,7 +46,7 @@ compress() {
     test "${u}" = "${u}${win}" || mv "${u}" "${u}${win}"
     echo "[+] ${1} compressed ($(du -h "${1}" | awk '{ print $1 }') -> $(du -h "${u}""${win}" | awk '{ print $1 }'))"
 }
-binaries=$(find "${root}/dist" -type f)
+binaries=$(find "${root}/bin" -type f)
 for b in ${binaries}; do
     if test "${1}" = "-9" ; then t="--ultra-brute" ; else t= ; fi
     compress "${b}" "${t}" &

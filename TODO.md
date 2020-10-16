@@ -2,7 +2,8 @@
 - [ ] Check Internet connection
 - [ ] Modules in pug to go (ToHTML method)
 - [x] Recreate runner in new config
-- [ ] Dockerfile
+- [ ] Furnace returns dish
+- [x] Dockerfile
 - [ ] Docker-compose test
 - [ ] Documentation
 - [ ] Tests
