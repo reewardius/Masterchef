@@ -40,6 +40,7 @@ func cookInFurnace(data []byte, opts map[string]interface{}) []string {
 				} else {
 					output, err = recipe.Cook(target, module.Arguments, opts)
 				}
+				defer lock.Unlock()
 				lock.Lock()
 				// Check errors
 				if err != nil {
@@ -50,7 +51,6 @@ func cookInFurnace(data []byte, opts map[string]interface{}) []string {
 				if len(output) > 0 {
 					result = append(result, output...)
 				}
-				lock.Unlock()
 			}(module, target)
 		}
 		wg.Wait()
@@ -60,7 +60,7 @@ func cookInFurnace(data []byte, opts map[string]interface{}) []string {
 		} else {
 			dish.Recipes[i].Output = result
 		}
-		if len(input) == 0 {
+		if len(input) == 0 || (len(input) == 1 && len(input[0]) == 0) {
 			input = errs
 			dish.Recipes[i].Output = errs
 			break

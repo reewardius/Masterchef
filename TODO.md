@@ -1,7 +1,7 @@
 - [x] Check noscript in HTML
 - [ ] Check Internet connection
 - [ ] Modules in pug to go (ToHTML method)
-- [ ] Recreate runner in new config
+- [x] Recreate runner in new config
 - [ ] Dockerfile
 - [ ] Docker-compose test
 - [ ] Documentation
