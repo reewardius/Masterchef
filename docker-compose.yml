@@ -1,0 +1,7 @@
+version: '3'
+services:
+    masterchef:
+        image: cosasdepuma/masterchef
+        container_name: masterchef
+        ports:
+            - 7767:7767
